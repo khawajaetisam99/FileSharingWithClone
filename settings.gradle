@@ -1,0 +1,14 @@
+
+include ':zxing'
+include ':core'
+include ':app'
+include ':subProject:Simple-File-Manager'
+//include ':subProject:Simple-Commons'
+//include ':subProject:RootTools'
+//include ':subProject:RootShell'
+/*include ':subProject:reprint'
+include ':subProject:core'
+include ':subProject:reprint_spass'
+include ':subProject:rxjava'
+include ':subProject:rxjava2'
+include ':subProject:tests'*/

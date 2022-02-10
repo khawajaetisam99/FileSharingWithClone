@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="package_name" translatable="false">org.khawaja.fileshare.client.android</string>
+    <string name="file_provider" translatable="false">org.khawaja.fileshare.client.android.debug.fileprovider</string>
+</resources>

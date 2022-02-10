@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<resources>
+    <!-- Launcher related -->
+    <color name="ic_launcher_background">#00B1FF</color>
+    <!-- Launcher related end -->
+
+
+    <!-- override the default stoke boarder colors-->
+    <color name="mtrl_textinput_default_box_stroke_color">#00B1FF</color>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <integer name="length_max_username">32</integer>
+    <integer name="default_sorting">32769</integer>
+</resources>

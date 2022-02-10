@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ScrollView
+        android:id="@+id/storage_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+        <RelativeLayout
+            android:id="@+id/storage_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText,RelativeOverlap">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:id="@+id/free_space_holder_constant"
+                >
+
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="4dp"
+                    android:fadingEdgeLength="5dp"
+                    app:strokeWidth="2dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    app:cardCornerRadius="@dimen/_10sdp">
+
+
+                    <RelativeLayout
+                        android:id="@+id/free_space_holder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:background="?attr/selectableItemBackground"
+                        android:paddingStart="@dimen/activity_margin"
+                        android:paddingTop="@dimen/activity_margin"
+                        android:paddingEnd="@dimen/activity_margin">
+
+                        <TextView
+                            android:id="@+id/free_space_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="…"
+                            android:textSize="@dimen/storage_free_space_text_size"
+                            tools:text="23 GB" />
+
+                        <TextView
+                            android:id="@+id/free_space_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/total_space"
+                            android:layout_alignBaseline="@+id/free_space_value"
+                            android:layout_alignBottom="@+id/free_space_value"
+                            android:layout_marginStart="@dimen/medium_margin"
+                            android:layout_toEndOf="@+id/free_space_value"
+                            android:text="@string/storage_free"
+                            android:textSize="@dimen/big_text_size"
+                            android:visibility="invisible" />
+
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
+                            android:id="@+id/main_storage_usage_progressbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/free_space_value"
+                            android:layout_marginTop="@dimen/medium_margin"
+                            android:layout_marginBottom="@dimen/medium_margin"
+                            android:max="100"
+                            app:trackThickness="4dp" />
+
+                        <TextView
+                            android:id="@+id/total_space"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/main_storage_usage_progressbar"
+                            android:layout_marginBottom="@dimen/big_margin"
+                            android:textSize="@dimen/big_text_size"
+                            tools:text="Total storage: 64 GB" />
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/images_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/free_space_holder_constant"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/activity_margin"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingEnd="@dimen/activity_margin"
+                android:paddingBottom="@dimen/normal_margin">
+
+
+                <ImageView
+                    android:id="@+id/images_logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_images_clone_asset"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/images_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/images"
+                    android:textColor="@color/black"
+
+                    app:layout_constraintStart_toEndOf="@+id/images_logo"
+                    app:layout_constraintTop_toTopOf="@+id/images_logo"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/bigger_text_size"
+                    />
+
+                <TextView
+                    android:id="@+id/images_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:alpha="0.7"
+                    android:text="…"
+                    android:textSize="@dimen/normal_text_size"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/images_label"
+                    app:layout_constraintStart_toEndOf="@+id/images_logo"
+
+                    tools:text="20 GB" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/images_progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/images_label"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:max="100"
+                    app:layout_constraintTop_toBottomOf="@+id/images_logo"
+                    app:trackThickness="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/videos_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/images_holder"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/activity_margin"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingEnd="@dimen/activity_margin"
+                android:paddingBottom="@dimen/normal_margin">
+
+                <ImageView
+                    android:id="@+id/videos_logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_videos_clone_asset"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/videos_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/videos"
+                    android:textSize="@dimen/bigger_text_size"
+
+
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/videos_logo"
+                    app:layout_constraintTop_toTopOf="@+id/videos_logo"
+                    android:textStyle="bold"
+
+                    />
+
+                <TextView
+                    android:id="@+id/videos_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/videos_label"
+                    app:layout_constraintStart_toEndOf="@+id/videos_logo"
+
+                    android:alpha="0.7"
+                    android:text="…"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="20 GB" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/videos_progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/videos_label"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/videos_logo"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:max="100"
+                    app:trackThickness="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/audio_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/videos_holder"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/activity_margin"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingEnd="@dimen/activity_margin"
+                android:paddingBottom="@dimen/normal_margin">
+
+                <ImageView
+                    android:id="@+id/audios_logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_audio_clone_asset"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/audio_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/audio"
+                    android:textSize="@dimen/bigger_text_size"
+
+
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/audios_logo"
+                    app:layout_constraintTop_toTopOf="@+id/audios_logo"
+                    android:textStyle="bold"
+
+                    />
+
+                <TextView
+                    android:id="@+id/audio_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/audio_label"
+                    app:layout_constraintStart_toEndOf="@+id/audios_logo"
+
+
+                    android:alpha="0.7"
+                    android:text="…"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="20 GB" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/audio_progressbar"
+                    android:layout_width="match_parent"
+                    app:layout_constraintTop_toBottomOf="@+id/audios_logo"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/audio_label"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:max="100"
+                    app:trackThickness="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/documents_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/audio_holder"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/activity_margin"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingEnd="@dimen/activity_margin"
+                android:paddingBottom="@dimen/normal_margin">
+
+                <ImageView
+                    android:id="@+id/documents_logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_documents_clone_asset"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/documents_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/documents"
+                    android:textSize="@dimen/bigger_text_size"
+
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/documents_logo"
+                    app:layout_constraintTop_toTopOf="@+id/documents_logo"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/documents_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/documents_label"
+                    app:layout_constraintStart_toEndOf="@+id/documents_logo"
+
+                    android:alpha="0.7"
+                    android:text="…"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="20 GB" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/documents_progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/documents_label"
+                    app:layout_constraintTop_toBottomOf="@+id/documents_logo"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:max="100"
+                    app:trackThickness="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/archives_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/documents_holder"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/activity_margin"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingEnd="@dimen/activity_margin"
+                android:paddingBottom="@dimen/normal_margin">
+
+
+                <ImageView
+                    android:id="@+id/archives_logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_zip_files_clone_asset"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/archives_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/zip_files"
+                    android:textSize="@dimen/bigger_text_size"
+
+
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/archives_logo"
+                    app:layout_constraintTop_toTopOf="@+id/archives_logo"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/archives_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/archives_label"
+                    app:layout_constraintStart_toEndOf="@+id/archives_logo"
+
+                    android:alpha="0.7"
+                    android:text="…"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="20 GB" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/archives_progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/archives_label"
+                    app:layout_constraintTop_toBottomOf="@+id/archives_logo"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:max="100"
+                    app:trackThickness="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/others_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/archives_holder"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="@dimen/activity_margin"
+                android:paddingTop="@dimen/normal_margin"
+                android:paddingEnd="@dimen/activity_margin"
+                android:paddingBottom="@dimen/normal_margin">
+
+                <ImageView
+                    android:id="@+id/others_logo"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/ic_apps_clone_asset"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/others_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/others"
+                    android:textSize="@dimen/bigger_text_size"
+
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/others_logo"
+                    app:layout_constraintTop_toTopOf="@+id/others_logo"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/others_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/others_label"
+                    app:layout_constraintStart_toEndOf="@+id/others_logo"
+
+
+                    android:alpha="0.7"
+                    android:text="…"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="20 GB" />
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/others_progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/others_label"
+                    app:layout_constraintTop_toBottomOf="@+id/others_logo"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:max="100"
+                    app:trackThickness="2dp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/universalCloneButton"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="20dp"
+        android:layout_height="40dp"
+        app:cardBackgroundColor="@color/colorPrimary"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
+        android:layout_marginBottom="@dimen/normal_margin"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clone"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/white"/>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    </FrameLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

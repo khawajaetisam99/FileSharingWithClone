@@ -1,0 +1,360 @@
+package org.khawaja.fileshare.client.android.filemanagerstats.activities
+
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.print.PrintAttributes
+import android.print.PrintManager
+import android.view.Menu
+import android.view.MenuItem
+import android.view.inputmethod.EditorInfo
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.ImageView
+import android.widget.TextView
+import com.simplemobiletools.commons.dialogs.ConfirmationAdvancedDialog
+import com.simplemobiletools.commons.extensions.*
+import com.simplemobiletools.commons.helpers.PERMISSION_WRITE_STORAGE
+import com.simplemobiletools.commons.helpers.REAL_FILE_PATH
+import com.simplemobiletools.commons.helpers.SAVE_DISCARD_PROMPT_INTERVAL
+import com.simplemobiletools.commons.helpers.ensureBackgroundThread
+import com.simplemobiletools.commons.views.MyEditText
+import org.khawaja.fileshare.client.android.R
+import org.khawaja.fileshare.client.android.filemanagerstats.dialogs.SaveAsDialog
+import org.khawaja.fileshare.client.android.filemanagerstats.extensions.config
+import org.khawaja.fileshare.client.android.filemanagerstats.extensions.openPath
+import org.khawaja.fileshare.client.android.filemanagerstats.views.GestureEditText
+//import kotlinx.android.synthetic.main.activity_read_text.*
+import org.khawaja.fileshare.client.android.databinding.ActivityReadTextBinding
+import java.io.File
+import java.io.OutputStream
+
+class ReadTextActivity : SimpleActivity() {
+    private val SELECT_SAVE_FILE_INTENT = 1
+    private val SELECT_SAVE_FILE_AND_EXIT_INTENT = 2
+
+    private var filePath = ""
+    private var originalText = ""
+    private var searchIndex = 0
+    private var lastSavePromptTS = 0L
+    private var searchMatches = emptyList<Int>()
+    private var isSearchActive = false
+
+    private lateinit var searchQueryET: MyEditText
+    private lateinit var searchPrevBtn: ImageView
+    private lateinit var searchNextBtn: ImageView
+    private lateinit var searchClearBtn: ImageView
+
+
+    private lateinit var viewBinding : ActivityReadTextBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_read_text)
+
+        viewBinding = ActivityReadTextBinding.inflate(layoutInflater)
+
+
+        searchQueryET = findViewById(R.id.search_query)
+        searchPrevBtn = findViewById(R.id.search_previous)
+        searchNextBtn = findViewById(R.id.search_next)
+        searchClearBtn = findViewById(R.id.search_clear)
+
+        if (checkAppSideloading()) {
+            return
+        }
+
+        viewBinding.readTextView.onGlobalLayout {
+            checkIntent()
+        }
+
+        setupSearchButtons()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_editor, menu)
+        updateMenuItemColors(menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_search -> openSearch()
+            R.id.menu_save -> saveText()
+            R.id.menu_open_with -> openPath(intent.dataString!!, true)
+            R.id.menu_print -> printText()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, resultData)
+        if (requestCode == SELECT_SAVE_FILE_INTENT && resultCode == Activity.RESULT_OK && resultData != null && resultData.data != null) {
+            val outputStream = contentResolver.openOutputStream(resultData.data!!)
+
+            val shouldExitAfterSaving = requestCode == SELECT_SAVE_FILE_AND_EXIT_INTENT
+
+            val selectedFilePath = getRealPathFromURI(intent.data!!)
+            val shouldOverwriteOriginalText = selectedFilePath == filePath
+
+            saveTextContent(outputStream, shouldExitAfterSaving, shouldOverwriteOriginalText)
+        }
+    }
+
+    override fun onBackPressed() {
+        val hasUnsavedChanges = originalText != viewBinding.readTextView.text.toString()
+        when {
+            isSearchActive -> closeSearch()
+            hasUnsavedChanges && System.currentTimeMillis() - lastSavePromptTS > SAVE_DISCARD_PROMPT_INTERVAL -> {
+                lastSavePromptTS = System.currentTimeMillis()
+                ConfirmationAdvancedDialog(this, "", R.string.save_before_closing, R.string.save, R.string.discard) {
+                    if (it) {
+                        saveText(true)
+                    } else {
+                        super.onBackPressed()
+                    }
+                }
+            }
+            else -> super.onBackPressed()
+        }
+    }
+
+    private fun openSearch() {
+        isSearchActive = true
+        viewBinding.searchWrapper.beVisible()
+        showKeyboard(searchQueryET)
+
+        viewBinding.readTextView.requestFocus()
+        viewBinding.readTextView.setSelection(0)
+
+        searchQueryET.postDelayed({
+            searchQueryET.requestFocus()
+        }, 250)
+    }
+
+    private fun saveText(shouldExitAfterSaving: Boolean = false) {
+        if (filePath.isEmpty()) {
+            filePath = getRealPathFromURI(intent.data!!) ?: ""
+        }
+
+        if (filePath.isEmpty()) {
+            SaveAsDialog(this, filePath, true) { _, filename ->
+                Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TITLE, filename)
+                    addCategory(Intent.CATEGORY_OPENABLE)
+
+                    val requestCode = if (shouldExitAfterSaving) {
+                        SELECT_SAVE_FILE_AND_EXIT_INTENT
+                    } else {
+                        SELECT_SAVE_FILE_INTENT
+                    }
+                    startActivityForResult(this, requestCode)
+                }
+            }
+        } else {
+            SaveAsDialog(this, filePath, false) { path, _ ->
+                handlePermission(PERMISSION_WRITE_STORAGE) { isPermissionGranted ->
+                    if (isPermissionGranted) {
+                        val file = File(path)
+                        getFileOutputStream(file.toFileDirItem(this), true) {
+                            val shouldOverwriteOriginalText = path == filePath
+                            saveTextContent(it, shouldExitAfterSaving, shouldOverwriteOriginalText)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun saveTextContent(outputStream: OutputStream?, shouldExitAfterSaving: Boolean, shouldOverwriteOriginalText: Boolean) {
+        if (outputStream != null) {
+            val currentText = viewBinding.readTextView.text.toString()
+            outputStream.bufferedWriter().use { it.write(currentText) }
+            toast(R.string.file_saved)
+            hideKeyboard()
+
+            if (shouldOverwriteOriginalText) {
+                originalText = currentText
+            }
+
+            if (shouldExitAfterSaving) {
+                super.onBackPressed()
+            }
+        } else {
+            toast(R.string.unknown_error_occurred)
+        }
+    }
+
+    private fun printText() {
+        try {
+            val webView = WebView(this)
+            webView.webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest) = false
+
+                override fun onPageFinished(view: WebView, url: String) {
+                    createWebPrintJob(view)
+                }
+            }
+
+            webView.loadData(viewBinding.readTextView.text.toString(), "text/plain", "UTF-8")
+        } catch (e: Exception) {
+            showErrorToast(e)
+        }
+    }
+
+    private fun createWebPrintJob(webView: WebView) {
+        val jobName = if (filePath.isNotEmpty()) {
+            filePath.getFilenameFromPath()
+        } else {
+            getString(R.string.app_name)
+        }
+
+        val printAdapter = webView.createPrintDocumentAdapter(jobName)
+
+        (getSystemService(Context.PRINT_SERVICE) as? PrintManager)?.apply {
+            print(jobName, printAdapter, PrintAttributes.Builder().build())
+        }
+    }
+
+    private fun checkIntent() {
+        viewBinding.readTextView.setTextColor(config.textColor)
+        val uri = if (intent.extras?.containsKey(REAL_FILE_PATH) == true) {
+            Uri.fromFile(File(intent.extras?.get(REAL_FILE_PATH).toString()))
+        } else {
+            intent.data
+        }
+
+        if (uri == null) {
+            finish()
+            return
+        }
+
+        ensureBackgroundThread {
+            originalText = if (uri.scheme == "file") {
+                filePath = uri.path!!
+                val file = File(filePath)
+                if (file.exists()) {
+                    try {
+                        file.readText()
+                    } catch (e: Exception) {
+                        showErrorToast(e)
+                        ""
+                    }
+                } else {
+                    toast(R.string.unknown_error_occurred)
+                    ""
+                }
+            } else {
+                try {
+                    contentResolver.openInputStream(uri)!!.bufferedReader().use { it.readText() }
+                } catch (e: OutOfMemoryError) {
+                    showErrorToast(e.toString())
+                    return@ensureBackgroundThread
+                } catch (e: Exception) {
+                    showErrorToast(e)
+                    finish()
+                    return@ensureBackgroundThread
+                }
+            }
+
+            runOnUiThread {
+                viewBinding.readTextView.setText(originalText)
+                if (originalText.isNotEmpty()) {
+                    hideKeyboard()
+                } else {
+                    showKeyboard(viewBinding.readTextView)
+                }
+            }
+        }
+    }
+
+    private fun setupSearchButtons() {
+        searchQueryET.onTextChangeListener {
+            searchTextChanged(it)
+        }
+
+        searchPrevBtn.setOnClickListener {
+            goToPrevSearchResult()
+        }
+
+        searchNextBtn.setOnClickListener {
+            goToNextSearchResult()
+        }
+
+        searchClearBtn.setOnClickListener {
+            closeSearch()
+        }
+
+        searchQueryET.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchNextBtn.performClick()
+                return@OnEditorActionListener true
+            }
+
+            false
+        })
+
+        viewBinding.searchWrapper.setBackgroundColor(config.primaryColor)
+        val contrastColor = config.primaryColor.getContrastColor()
+        arrayListOf(searchPrevBtn, searchNextBtn, searchClearBtn).forEach {
+            it.applyColorFilter(contrastColor)
+        }
+    }
+
+    private fun searchTextChanged(text: String) {
+        viewBinding.readTextView.text?.clearBackgroundSpans()
+
+        if (text.isNotBlank() && text.length > 1) {
+            searchMatches = viewBinding.readTextView.value.searchMatches(text)
+            viewBinding.readTextView.highlightText(text, config.primaryColor)
+        }
+
+        if (searchMatches.isNotEmpty()) {
+            viewBinding.readTextView.requestFocus()
+            viewBinding.readTextView.setSelection(searchMatches.getOrNull(searchIndex) ?: 0)
+        }
+
+        searchQueryET.postDelayed({
+            searchQueryET.requestFocus()
+        }, 50)
+    }
+
+    private fun goToPrevSearchResult() {
+        if (searchIndex > 0) {
+            searchIndex--
+        } else {
+            searchIndex = searchMatches.lastIndex
+        }
+
+        selectSearchMatch(viewBinding.readTextView)
+    }
+
+    private fun goToNextSearchResult() {
+        if (searchIndex < searchMatches.lastIndex) {
+            searchIndex++
+        } else {
+            searchIndex = 0
+        }
+
+        selectSearchMatch(viewBinding.readTextView)
+    }
+
+    private fun closeSearch() {
+        searchQueryET.text.clear()
+        isSearchActive = false
+        viewBinding.searchWrapper.beGone()
+    }
+
+    private fun selectSearchMatch(editText: GestureEditText) {
+        if (searchMatches.isNotEmpty()) {
+            editText.requestFocus()
+            editText.setSelection(searchMatches.getOrNull(searchIndex) ?: 0)
+        } else {
+            hideKeyboard()
+        }
+    }
+}

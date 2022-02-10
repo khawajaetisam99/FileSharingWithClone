@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_transfer_selection"
+    app:startDestination="@id/transferSelectionOptionFragment">
+
+
+
+    <fragment
+        android:id="@+id/transferSelectionOptionFragment"
+        android:name="org.khawaja.fileshare.client.android.fragment.TransferSelectionOptionFragment"
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_transferSelectionFragment_to_cloneSelectionFragment"
+            app:destination="@id/cloneSelectionFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/cloneSelectionFragment"
+        android:name="org.khawaja.fileshare.client.android.fragment.CloneSelectionFragment"
+        android:label="@string/clone_selection_option" >
+
+
+        <action
+            android:id="@+id/pick_client"
+            app:destination="@id/nav_pick_client">
+            <argument
+                android:name="direction"
+                app:argType="org.monora.uprotocol.core.protocol.Direction"
+                android:defaultValue="Incoming" />
+        </action>
+
+        <!-- old phone will directly open the Content Browser fragment-->
+
+        <action
+            android:id="@+id/action_optionsFragment_to_barcodeScannerFragment"
+            app:destination="@id/barcodeScannerFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+
+    </fragment>
+
+
+    <include app:graph="@navigation/nav_pick_client" />
+
+
+
+    <fragment
+        android:id="@+id/barcodeScannerFragment"
+        android:name="org.khawaja.fileshare.client.android.fragment.pickclient.BarcodeScannerFragment"
+        android:label="@string/scan_qr_code">
+        <action
+            android:id="@+id/action_barcodeScannerFragment_to_wifiConnectFragment"
+            app:destination="@id/wifiConnectFragment" />
+        <argument
+            android:name="inetAddress"
+            app:argType="java.net.InetAddress"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/wifiConnectFragment"
+        android:name="org.khawaja.fileshare.client.android.fragment.pickclient.WifiConnectFragment"
+        android:label="@string/connect_to_wifi">
+        <argument
+            android:name="networkDescription"
+            app:argType="org.khawaja.fileshare.client.android.model.NetworkDescription" />
+        <action
+            android:id="@+id/action_wifiConnectFragment_to_barcodeScannerFragment"
+            app:destination="@id/barcodeScannerFragment" />
+        <argument
+            android:name="pin"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </dialog>
+
+
+
+</navigation>

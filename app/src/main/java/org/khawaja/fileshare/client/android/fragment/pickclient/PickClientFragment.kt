@@ -1,0 +1,88 @@
+
+package org.khawaja.fileshare.client.android.fragment.pickclient
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
+import org.khawaja.fileshare.client.android.R
+import org.khawaja.fileshare.client.android.database.model.UClient
+import org.khawaja.fileshare.client.android.databinding.LayoutEmptyContentBinding
+import org.khawaja.fileshare.client.android.databinding.ListPickClientBinding
+import org.khawaja.fileshare.client.android.itemcallback.UClientItemCallback
+import org.khawaja.fileshare.client.android.viewmodel.ClientsViewModel
+import org.khawaja.fileshare.client.android.viewmodel.EmptyContentViewModel
+import org.khawaja.fileshare.client.android.viewmodel.content.ClientContentViewModel
+
+@AndroidEntryPoint
+class PickClientFragment : Fragment(R.layout.layout_clients) {
+    private val clientsViewModel: ClientsViewModel by viewModels()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val emptyView = LayoutEmptyContentBinding.bind(view.findViewById(R.id.emptyView))
+        val adapter = Adapter { client, clickType ->
+            when (clickType) {
+                ClientContentViewModel.ClickType.Default -> findNavController().navigate(
+                    PickClientFragmentDirections.actionClientsFragmentToClientConnectionFragment(client)
+                )
+                ClientContentViewModel.ClickType.Details -> findNavController().navigate(
+                    PickClientFragmentDirections.actionClientsFragmentToClientDetailsFragment(client)
+                )
+            }
+        }
+        val emptyContentViewModel = EmptyContentViewModel()
+
+        emptyView.viewModel = emptyContentViewModel
+        emptyView.emptyText.setText(R.string.empty_clients_list)
+        emptyView.emptyImage.setImageResource(R.drawable.ic_devices_white_24dp)
+        adapter.setHasStableIds(true)
+        recyclerView.adapter = adapter
+
+        emptyView.executePendingBindings()
+        clientsViewModel.clients.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+            emptyContentViewModel.with(recyclerView, it.isNotEmpty())
+        }
+    }
+
+    class ClientViewHolder(
+        val binding: ListPickClientBinding,
+        val clickListener: (UClient, ClientContentViewModel.ClickType) -> Unit,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(client: UClient) {
+            binding.viewModel = ClientContentViewModel(client)
+            binding.clickListener =
+                View.OnClickListener { clickListener(client, ClientContentViewModel.ClickType.Default) }
+            binding.detailsClickListener =
+                View.OnClickListener { clickListener(client, ClientContentViewModel.ClickType.Details) }
+            binding.executePendingBindings()
+        }
+    }
+
+    class Adapter(
+        private val clickListener: (UClient, ClientContentViewModel.ClickType) -> Unit,
+    ) : ListAdapter<UClient, ClientViewHolder>(UClientItemCallback()) {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientViewHolder {
+            return ClientViewHolder(
+                ListPickClientBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                clickListener
+            )
+        }
+
+        override fun onBindViewHolder(holder: ClientViewHolder, position: Int) {
+            holder.bind(getItem(position))
+        }
+
+        override fun getItemId(position: Int): Long {
+            return getItem(position).uid.hashCode().toLong()
+        }
+    }
+}

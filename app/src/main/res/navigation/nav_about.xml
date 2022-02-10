@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_about"
+    app:startDestination="@id/aboutFragment">
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="org.khawaja.fileshare.client.android.fragment.AboutFragment"
+        android:label="@string/about" >
+        <action
+            android:id="@+id/action_aboutFragment_to_licensesFragment"
+            app:destination="@id/licensesFragment" />
+        <action
+            android:id="@+id/action_aboutFragment_to_changelogFragment2"
+            app:destination="@id/changelogFragment2" />
+    </fragment>
+    <dialog
+        android:id="@+id/licensesFragment"
+        android:name="org.khawaja.fileshare.client.android.fragment.LicensesFragment"
+        android:label="@string/third_party_libraries" />
+    <dialog
+        android:id="@+id/changelogFragment2"
+        android:name="org.khawaja.fileshare.client.android.fragment.ChangelogFragment"
+        android:label="@string/changelog" />
+</navigation>

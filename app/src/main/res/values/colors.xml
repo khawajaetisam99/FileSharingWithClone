@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <!-- Launcher related -->
+    <color name="ic_launcher_background">#00B1FF</color>
+    <!-- Launcher related end -->
+    <color name="soft_grey">#FAFAFA</color>
+    <color name="colorControlNormal">#555</color>
+    <color name="colorError">#00B1FF</color>
+    <color name="colorOnPrimary">@color/colorControlNormal</color>
+    <color name="colorOnSecondary">@color/colorControlNormal</color>
+    <color name="colorPrimary">#00B1FF</color>
+    <color name="colorPrimaryDark">#ccc</color>
+    <color name="colorPrimaryDark23">#ffffffff</color>
+    <color name="colorSecondary">#00B1FF</color>
+    <color name="colorSurface">#ffffff</color>
+    <color name="windowBackground">#ffffff</color>
+    <!-- local coloring-->
+    <color name="colorDonation">#f44336</color>
+    <color name="colorDivider">#20808080</color>
+    <color name="colorPassive">#20000000</color>
+    <color name="colorSelection">#12000000</color>
+    <color name="colorShadowBeginning">#00FFFFFF</color>
+    <color name="colorShadowEnd">#80FFFFFF</color>
+    <color name="colorTranslucent">#20ffffff</color>
+    <color name="contentShowingBackground">#cfcfcf</color>
+
+
+    <!-- SEPARATOR -->
+
+
+    <color name="dark_colorControlNormal">#dfdfdf</color>
+    <color name="dark_colorError">#00B1FF</color>
+    <color name="dark_colorOnPrimary">@color/dark_colorControlNormal</color>
+    <color name="dark_colorOnSecondary">@color/dark_colorControlNormal</color>
+    <color name="dark_colorPrimary">#1E1E1E</color>
+    <color name="dark_colorPrimaryDark">@color/dark_colorPrimary</color>
+    <color name="dark_colorSecondary">#00B1FF</color>
+
+    <color name="dark_colorSurface">#2E2E2E</color>
+    <color name="dark_windowBackground">@color/dark_colorPrimary</color>
+    <color name="dark_colorPrimaryDark23">@color/dark_colorPrimary</color>
+    <!-- local coloring-->
+    <color name="dark_colorDonation">#f44336</color>
+    <color name="dark_colorDivider">#20808080</color>
+    <color name="dark_colorPassive">#809e9e9e</color>
+    <color name="dark_colorSelection">#229e9e9e</color>
+    <color name="dark_colorShadowBeginning">#001E1E1E</color>
+    <color name="dark_colorShadowEnd">#801E1E1E</color>
+    <color name="dark_colorTranslucent">#201E1E1E</color>
+    <color name="dark_contentShowingBackground">#616161</color>
+
+
+    <!-- SEPARATOR -->
+
+
+    <color name="black_dominant">#000</color>
+    <color name="black_surface">#1a1a1a</color>
+    <color name="black_colorDivider">#30808080</color>
+    <color name="black_colorPassive">#409e9e9e</color>
+    <color name="black_colorShadowBeginning">#00000000</color>
+    <color name="black_colorShadowEnd">#80000000</color>
+    <color name="black_colorTranslucent">#20000000</color>
+
+
+    <!-- override the default stoke boarder colors-->
+    <color name="mtrl_textinput_default_box_stroke_color">#00B1FF</color>
+    <color name="white">#fff</color>
+
+
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+
+
+    <color name="color_primary">#E3AB02</color>
+    <!--<color name="color_primary_dark">#E3AB02</color>-->
+    <color name="color_primary_dark">#E3AB02</color>
+    <color name="color_accent">#FFC207</color>
+
+    <!--<color name="actionbar_menu_icon">#454545</color>-->
+    <color name="actionbar_menu_icon">#E3AB02</color>
+    <color name="crop_image_view_background">#BB000000</color>
+    <color name="circle_black_background">#66000000</color>
+
+
+    <!-- Authentication -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+
+    <color name="yellow">#FFC207</color>
+    <color name="grey_color">#878787</color>
+    <color name="dark_grey_color">#202020</color>
+
+
+    <color name="background_colorr">#DFEAF6</color>
+    <color name="yellow_dark">#AF8402</color>
+
+
+    <!-- onboarding color -->
+    <color name="neuLight">#FBFDFF</color>
+    <color name="white_alpha">#F7FFFFFF</color>
+    <color name="grey">#909090</color>
+    <color name="stroke_grey">#868686</color>
+
+    <color name="disabledTextColor">#61000000</color>
+    <color name="grey_icon">#434040</color>
+    <color name="neuDark">#CEE1FA</color>
+    <color name="orange_vlight">#E4B76E</color>
+
+    <color name="md_red">#F44336</color>
+
+
+
+
+
+</resources>

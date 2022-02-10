@@ -1,0 +1,4 @@
+NEW: Better multitasking
+IMPROVED: File sharing screen 
+FIXED: Not showing 
+MISC: Improved 

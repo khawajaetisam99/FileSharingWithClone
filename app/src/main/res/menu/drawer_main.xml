@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group android:id="@+id/nav_group_main">
+
+        <item
+            android:id="@+id/manage_clients"
+            android:visible="false"
+            android:icon="@drawable/ic_devices_white_24dp"
+            android:orderInCategory="1"
+            android:title="@string/manage_clients" />
+
+        <item
+            android:id="@+id/preferences"
+            android:visible="false"
+            android:icon="@drawable/ic_settings_white_24dp"
+            android:orderInCategory="2"
+            android:title="@string/settings" />
+
+        <item
+            android:id="@+id/onboarding"
+            android:visible="true"
+            android:icon="@drawable/ic_dashicons_welcome_view_site"
+            android:orderInCategory="3"
+            android:title="@string/view_onboarding_tutorials" />
+
+        <item
+            android:id="@+id/about"
+            android:visible="false"
+            android:icon="@drawable/ic_info_white_24dp"
+            android:orderInCategory="3"
+            android:title="@string/about" />
+
+        <item
+            android:id="@+id/privacy"
+            android:visible="true"
+            android:icon="@drawable/ic_priivacy_policy_icon"
+            android:orderInCategory="3"
+            android:title="@string/privacy" />
+
+        <item
+            android:id="@+id/storageOption"
+            android:visible="false"
+            android:icon="@drawable/ic_save_grey_24"
+            android:orderInCategory="3"
+            android:title="@string/storage_setting" />
+
+        <!--A5A7AB-->
+
+
+    </group>
+
+    <group android:id="@+id/nav_group_support">
+        <item
+            android:id="@+id/donate"
+            android:icon="@drawable/ic_favorite_white_24dp"
+            android:orderInCategory="5"
+            android:title="@string/donate"
+            android:visible="false" />
+
+        <item
+            android:id="@+id/about_uprotocol"
+            android:orderInCategory="6"
+            android:visible="false"
+            app:actionLayout="@layout/layout_uprotocol_banner"
+            tools:ignore="MenuTitle" />
+
+    </group>
+</menu>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="detailsClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="viewModel"
+            type="org.khawaja.fileshare.client.android.viewmodel.content.ClientContentViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        android:onClick="@{clickListener}"
+        onLongClick="@{detailsClickListener}">
+
+
+
+
+        <LinearLayout
+            android:id="@+id/infoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:gravity="start"
+            android:background="#FFFFFF"
+            android:paddingBottom="0dp"
+            android:padding="8dp"
+            android:orientation="horizontal">
+
+            <!--android:layout_width="match_parent"
+            android:layout_height="match_parent"-->
+            <org.khawaja.fileshare.client.android.view.ComparativeRelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                android:padding="5dp"
+                app:baseOnSmallerLength="false">
+
+                <!--android:layout_width="match_parent"
+                android:layout_height="match_parent"-->
+                <ImageView
+                    pictureOf="@{viewModel.client}"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:contentDescription="@string/photo" />
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/ic_group_1687" />
+
+            </org.khawaja.fileshare.client.android.view.ComparativeRelativeLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/onlineClientsTextDetails"
+                android:layout_width="match_parent"
+                android:background="#FFFFFF"
+                android:layout_height="60dp"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:paddingBottom="0dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/TextAppearance.Primary.Big.SingleLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="3dp"
+                    android:text="@{viewModel.nickname}" />
+
+                <!--android:text="@{viewModel.clientType}"-->
+                <TextView
+                    style="@style/TextAppearance.Secondary.SingleLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:ellipsize="middle"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginStart="4dp"
+                    android:text="@string/online"
+                     />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

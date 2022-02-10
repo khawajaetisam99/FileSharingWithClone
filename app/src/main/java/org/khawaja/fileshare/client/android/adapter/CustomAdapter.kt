@@ -1,0 +1,49 @@
+package org.khawaja.fileshare.client.android.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import org.khawaja.fileshare.client.android.R
+import org.khawaja.fileshare.client.android.viewmodel.ItemsViewModel
+
+class CustomAdapter(private val mList: List<ItemsViewModel>) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+
+    // create new views
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // inflates the card_view_design view
+        // that is used to hold list item
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.contact_card, parent, false)
+
+        return ViewHolder(view)
+    }
+
+    // binds the list items to a view
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+        val ItemsViewModel = mList[position]
+
+        // sets the image to the imageview from our itemHolder class
+        holder.imageView.setImageResource(ItemsViewModel.image)
+
+        // sets the text to the textview from our itemHolder class
+        holder.contactName.text = ItemsViewModel.contactName
+        holder.contactNumber.text = ItemsViewModel.contactNumber
+
+    }
+
+    // return the number of the items in the list
+    override fun getItemCount(): Int {
+        return mList.size
+    }
+
+    // Holds the views for adding it to image and text
+    class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.imageview)
+        val contactName: TextView = itemView.findViewById(R.id.contactName)
+        val contactNumber : TextView = itemView.findViewById(R.id.contactNumber)
+    }
+}
