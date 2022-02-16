@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:734513629205:android:05a7eeb09bc2e4da67661c",
         "android_client_info": {
-          "package_name": "com.smartswitch.phoneclone.offline.backup"
+          "package_name": "org.khawaja.fileshare.client.android"
         }
       },
       "oauth_client": [
