@@ -48,7 +48,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.smartswitch.phoneclone.offline.backup"
+        applicationId "org.khawaja.fileshare.client.android"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 2
@@ -83,13 +83,13 @@ android {
 
     productFlavors {
         fossReliant {
-            applicationId = 'com.smartswitch.phoneclone.offline.backup'
+            applicationId = 'org.khawaja.fileshare.client.android'
             dimension 'mode'
             signingConfig signingConfigs.gbDistribution
         }
 
         googlePlay {
-            applicationId = 'com.smartswitch.phoneclone.offline.backup'
+            applicationId = 'org.khawaja.fileshare.client.android'
             dimension 'mode'
             signingConfig signingConfigs.gbDistribution
         }
